@@ -18,28 +18,28 @@ class _SplashState extends State<Splash> {
       const Duration(seconds: 5),
       () {
          FlappyAmongUs().overlays.add("MainMenu");
-        setState(() => mainvis = false);
+        setState(() => isVisibleScreen = false);
       },
     );
 
     Timer(
       const Duration(milliseconds: 500),
-      () => setState(() => visiable = !visiable),
+      () => setState(() => isVisibleLogo = !isVisibleLogo),
     );
     Timer(
       const Duration(milliseconds: 1400),
-      () => setState(() => visiable1 = !visiable1),
+      () => setState(() => isVisibleLogoTitle = !isVisibleLogoTitle),
     );
     Timer(
       const Duration(milliseconds: 2000),
-      () => setState(() => visiable2 = !visiable2),
+      () => setState(() => isVisibleText = !isVisibleText),
     );
   }
 
-  bool mainvis = true;
-  bool visiable = false;
-  bool visiable1 = false;
-  bool visiable2 = false;
+  bool isVisibleScreen = true;
+  bool isVisibleLogo = false;
+  bool isVisibleLogoTitle = false;
+  bool isVisibleText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class _SplashState extends State<Splash> {
       home: Scaffold(
         backgroundColor: Colors.black,
         body: AnimatedOpacity(
-          opacity: mainvis ? 1.0 : 0.0,
+          opacity: isVisibleScreen ? 1.0 : 0.0,
           duration: const Duration(seconds: 2),
           child: Container(
             height: screenHeight,
@@ -68,7 +68,7 @@ class _SplashState extends State<Splash> {
                     height: 100,
                   ),
                   AnimatedOpacity(
-                    opacity: visiable ? 1.0 : 0.0,
+                    opacity: isVisibleLogo ? 1.0 : 0.0,
                     duration: const Duration(seconds: 2),
                     child: Container(
                       height: 280,
@@ -81,7 +81,7 @@ class _SplashState extends State<Splash> {
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: visiable1 ? 1.0 : 0.0,
+                    opacity: isVisibleLogoTitle ? 1.0 : 0.0,
                     duration: const Duration(seconds: 2),
                     child: Container(
                       height: 100,
@@ -97,10 +97,10 @@ class _SplashState extends State<Splash> {
                     height: 100,
                   ),
                   AnimatedOpacity(
-                    opacity: visiable2 ? 1.0 : 0.0,
+                    opacity: isVisibleText ? 1.0 : 0.0,
                     duration: const Duration(seconds: 2),
                     child: const Text(
-                      "Developed By : \nFares Ansara\nAbdelrahman Aljammal",
+                      "Developed By : \nFaris Ansara\nAbdelrahman Aljammal",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: "Cooper-Black",

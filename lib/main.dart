@@ -29,6 +29,7 @@ late final double screenWidth;
 late final double screenHeight;
 int highScore = 0;
 int score = 0;
+double distanceTravelled = 0;
 double gravity = 2;
 
 class FlappyAmongUs extends FlameGame
@@ -98,11 +99,11 @@ class FlappyAmongUs extends FlameGame
   void reset() {
     gameOver = false;
     gravity = 2;
-    removeAll(children);
-    prepare(0);
-    timer.reset();
-    pause();
-    overlays.add("GameOverMenu");
+    score = 0;
+    distanceTravelled = 0;
+    character.reset();
+    pipeManager.reset();
+    resume();
   }
 
   @override
@@ -112,7 +113,8 @@ class FlappyAmongUs extends FlameGame
       if (score > highScore) {
         highScore = score;
       }
-      reset();
+      pause();
+      overlays.add("GameOverMenu");
     }
   }
 }

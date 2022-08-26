@@ -6,9 +6,9 @@ import 'package:flappy_among_us/main_menu.dart';
 import 'package:flappy_among_us/score_text.dart';
 import 'package:flappy_among_us/pipe_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 
+import 'game_over_menu.dart';
 import 'splash.dart';
 import 'player.dart';
 
@@ -19,8 +19,8 @@ void main() {
     initialActiveOverlays: const ["Splash"],
     overlayBuilderMap: {
       "Splash": (_, FlappyAmongUs game) => const Splash(),
-      "MainMenu" :(_,FlappyAmongUs game) => const MainMenu(),
-      "PauseMenu" : (_, FlappyAmongUs game) => Container(),
+      "MainMenu": (_, FlappyAmongUs game) => const MainMenu(),
+      "GameOverMenu": (_, FlappyAmongUs game) => const GAmeOverMenu(),
     },
   ));
 }
@@ -33,9 +33,7 @@ double gravity = 2;
 
 class FlappyAmongUs extends FlameGame
     with HasTappableComponents, HasCollisionDetection {
-
-  static final FlappyAmongUs _instance =
-  FlappyAmongUs._privateConstructor();
+  static final FlappyAmongUs _instance = FlappyAmongUs._privateConstructor();
 
   FlappyAmongUs._privateConstructor();
 
@@ -44,14 +42,15 @@ class FlappyAmongUs extends FlameGame
   }
 
   late Player character;
-  late PipeManager pipeManager ;
-  bool gameOver = false ;
+  late PipeManager pipeManager;
+
+  bool gameOver = false;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
     screenWidth = size[0];
     screenHeight = size[1];
-
   }
 
   @override
@@ -61,7 +60,6 @@ class FlappyAmongUs extends FlameGame
   }
 
   Future<void> prepare(int skin) async {
-
     ParallaxComponent background = await ParallaxComponent.load(
       [ParallaxImageData("background.png")],
       repeat: ImageRepeat.repeat,
@@ -71,48 +69,50 @@ class FlappyAmongUs extends FlameGame
     add(background);
 
     pipeManager = PipeManager(
-        lowerPipeImage: await loadSprite("pipe_up.png"),
-    upperPipeImage: await loadSprite("pipe_down.png"),
+      lowerPipeImage: await loadSprite("pipe_up.png"),
+      upperPipeImage: await loadSprite("pipe_down.png"),
     );
     add(pipeManager);
 
     character = Player(
-    sprite: skin == 0?await loadSprite("JO_skin.png"):await loadSprite("PL_skin.png"),
+      sprite: skin == 0
+          ? await loadSprite("JO_skin.png")
+          : await loadSprite("PS_skin.png"),
     );
     add(character);
     add(ScoreText());
 
-
-    FlameAudio.bgm.play("song.mp3");
+    // FlameAudio.bgm.play("song.mp3");
   }
 
-  void pause(){
+  void pause() {
     pauseEngine();
-    FlameAudio.bgm.pause();
+    // FlameAudio.bgm.pause();
   }
 
-  void resume(){
+  void resume() {
     resumeEngine();
-    FlameAudio.bgm.resume();
+    // FlameAudio.bgm.resume();
   }
 
-  void reset(){
+  void reset() {
     gameOver = false;
     gravity = 2;
     removeAll(children);
     prepare(0);
     timer.reset();
+    pause();
+    overlays.add("GameOverMenu");
   }
 
   @override
-  void update( double dt){
+  void update(double dt) {
     super.update(dt);
-    if(gameOver){
-      if(score>highScore) {
+    if (gameOver) {
+      if (score > highScore) {
         highScore = score;
       }
       reset();
     }
   }
-
 }

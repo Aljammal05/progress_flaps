@@ -13,6 +13,8 @@ class MainMenu extends StatefulWidget {
 class _MainMenuState extends State<MainMenu> {
   bool vis = false;
 
+  int selectedSkin = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -33,8 +35,7 @@ class _MainMenuState extends State<MainMenu> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children:  [
+          children: [
             const Text(
               "Choose your character",
               textAlign: TextAlign.center,
@@ -43,11 +44,75 @@ class _MainMenuState extends State<MainMenu> {
                   fontSize: 25,
                   color: Colors.white),
             ),
-            TextButton(onPressed: (){
-              FlappyAmongUs().prepare(0);
-              FlappyAmongUs().overlays.clear();
-            }, child: Text("go"),)
+            const SizedBox(
+              height: 100,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                skinWidget(
+                  image: const AssetImage('assets/images/JO_skin.png'),
+                  skinIndex: 0,
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                skinWidget(
+                  image: const AssetImage('assets/images/PS_skin.png'),
+                  skinIndex: 1,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 100,
+            ),
+            MaterialButton(
+              onPressed: () {
+                FlappyAmongUs().prepare(selectedSkin);
+                FlappyAmongUs().overlays.clear();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: const Color(0xff164D89)),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 20),
+                  child: Text(
+                    "START",
+                    style: TextStyle(
+                        fontFamily: "Cooper-Black",
+                        fontSize: 22,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+            )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget skinWidget({required ImageProvider image, required int skinIndex}) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedSkin = skinIndex;
+        });
+      },
+      child: Container(
+        height: screenWidth / 2.5,
+        width: screenWidth / 2.5,
+        decoration: BoxDecoration(
+          color: skinIndex == selectedSkin
+              ? const Color(0x55ffffff)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+              color:
+                  skinIndex == selectedSkin ? Colors.white : Colors.transparent,
+              width: 3),
+          image: DecorationImage(image: image, fit: BoxFit.fitHeight),
         ),
       ),
     );

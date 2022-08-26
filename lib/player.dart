@@ -5,7 +5,7 @@ import 'package:flappy_among_us/main.dart';
 import 'package:flutter/material.dart';
 
 class Player extends SpriteComponent
-    with CollisionCallbacks, HasGameRef<FlappyAmongUs>{
+    with CollisionCallbacks{
 
   Player(
       {required sprite}){
@@ -26,15 +26,13 @@ class Player extends SpriteComponent
       ..paint = defaultPaint
       ..renderShape = true;
     add(hitBox);
-    add(RotateEffect.by(
-      6.25,
-      EffectController(
-        duration: 5,
-        // reverseDuration: 6,
-        // alternate: false,
-        infinite: true
-      ),
-    ));
+    // add(RotateEffect.by(
+    //   6.25,
+    //   EffectController(
+    //     duration: 5,
+    //     infinite: true
+    //   ),
+    // ));
   }
 
   void falling() {
@@ -69,11 +67,15 @@ class Player extends SpriteComponent
 
   }
 
+  void reset(){
+    position = Vector2(screenWidth/3,screenHeight/2);
+  }
+
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // TODO: implement onCollision
     super.onCollision(intersectionPoints, other);
-    gameRef.gameOver = true;
+    FlappyAmongUs().gameOver = true;
   }
 
 }

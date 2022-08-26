@@ -20,7 +20,7 @@ void main() {
     overlayBuilderMap: {
       "Splash": (_, FlappyAmongUs game) => const Splash(),
       "MainMenu": (_, FlappyAmongUs game) => const MainMenu(),
-      "GameOverMenu": (_, FlappyAmongUs game) => const GAmeOverMenu(),
+      "GameOverMenu": (_, FlappyAmongUs game) => const GameOverMenu(),
     },
   ));
 }

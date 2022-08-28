@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flappy_among_us/game_over_menu.dart';
 import 'package:flappy_among_us/main.dart';
 import 'package:flutter/material.dart';
 
@@ -10,10 +10,10 @@ class MainMenu extends StatefulWidget {
   State<MainMenu> createState() => _MainMenuState();
 }
 
+int selectedSkin = 0;
+
 class _MainMenuState extends State<MainMenu> {
   bool vis = false;
-
-  int selectedSkin = 0;
 
   @override
   void initState() {
@@ -68,15 +68,20 @@ class _MainMenuState extends State<MainMenu> {
             ),
             MaterialButton(
               onPressed: () {
-                FlappyAmongUs().prepare(selectedSkin);
-                FlappyAmongUs().overlays.clear();
+                if (mainMenu) {
+                  FlappyAmongUs().gameOverMainMenu(selectedSkin);
+                  mainMenu = false;
+                } else {
+                  FlappyAmongUs().overlays.clear();
+                  FlappyAmongUs().prepare(selectedSkin);
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: const Color(0xff164D89)),
                 child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
                   child: Text(
                     "START",
                     style: TextStyle(

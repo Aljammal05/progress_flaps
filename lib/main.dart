@@ -2,6 +2,7 @@ import 'package:flame/components.dart' hide Timer;
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flappy_among_us/main_menu.dart';
 import 'package:flappy_among_us/score_text.dart';
 import 'package:flappy_among_us/pipe_manager.dart';
@@ -20,7 +21,7 @@ void main() {
     overlayBuilderMap: {
       "Splash": (_, FlappyAmongUs game) => const Splash(),
       "MainMenu": (_, FlappyAmongUs game) => const MainMenu(),
-      "GameOverMenu": (_, FlappyAmongUs game) => const GameOverMenu(),
+      "GameOverMenu": (_, FlappyAmongUs game) =>  GameOverMenu(),
     },
   ));
 }
@@ -31,6 +32,7 @@ int highScore = 0;
 int score = 0;
 double distanceTravelled = 0;
 double gravity = 2;
+bool isPlaying = false;
 
 class FlappyAmongUs extends FlameGame
     with HasTappableComponents, HasCollisionDetection {
@@ -58,6 +60,16 @@ class FlappyAmongUs extends FlameGame
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
     character.jumping();
+    if (!isPlaying){
+      FlameAudio.bgm.play("pop.mp3");
+      isPlaying = true;
+      Future.delayed(const Duration(milliseconds: 200), (){
+        FlameAudio.bgm.stop();
+        isPlaying = false;
+      });
+    }
+
+
   }
 
   Future<void> prepare(int skin) async {
@@ -83,7 +95,6 @@ class FlappyAmongUs extends FlameGame
     add(character);
     add(ScoreText());
 
-    // FlameAudio.bgm.play("song.mp3");
   }
 
   void pause() {
@@ -103,6 +114,17 @@ class FlappyAmongUs extends FlameGame
     distanceTravelled = 0;
     character.reset();
     pipeManager.reset();
+    resume();
+  }
+
+  void gameOverMainMenu(int selectedSkin){
+    gameOver = false;
+    gravity = 2;
+    removeAll(children);
+    prepare(selectedSkin);
+    score = 0;
+    distanceTravelled = 0;
+    overlays.clear();
     resume();
   }
 

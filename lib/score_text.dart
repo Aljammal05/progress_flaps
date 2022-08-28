@@ -20,7 +20,7 @@ class ScoreText extends PositionComponent {
     super.render(canvas);
     scoreText.render(
       canvas,
-      'Score : $score   HI : $highScore',
+      'Score : $score   High-Score : $highScore',
       Vector2(screenWidth / 2, 100),
       anchor: Anchor.center,
     );

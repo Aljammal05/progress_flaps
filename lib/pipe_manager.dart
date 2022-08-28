@@ -4,10 +4,9 @@ import 'package:flame/components.dart';
 import 'package:flappy_among_us/main.dart';
 import 'package:flappy_among_us/pipes.dart';
 
-
+late Timer timer;
 
 class PipeManager extends PositionComponent {
-  late Timer timer;
   Sprite lowerPipeImage;
   Sprite upperPipeImage;
   Random random = Random();

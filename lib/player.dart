@@ -4,25 +4,25 @@ import 'package:flame/effects.dart';
 import 'package:flappy_among_us/main.dart';
 import 'package:flutter/material.dart';
 
-class Player extends SpriteComponent
-    with CollisionCallbacks{
-
-  Player(
-      {required sprite}){
+class Player extends SpriteComponent with CollisionCallbacks {
+  Player({required sprite}) {
     super.anchor = Anchor.center;
-    super.position = Vector2(screenWidth/3,screenHeight/2);
+    super.position = Vector2(screenWidth / 3, screenHeight / 2);
     super.sprite = sprite;
     super.size = Vector2(60, 50);
     super.angle = 0.45;
   }
-
 
   @override
   Future<void> onLoad() async {
     final defaultPaint = Paint()
       ..color = Colors.transparent
       ..style = PaintingStyle.stroke;
-    ShapeHitbox hitBox = CircleHitbox()
+    ShapeHitbox hitBox = CircleHitbox(
+      radius: 15,
+      anchor: Anchor.center,
+      position: Vector2(width / 2, height / 2),
+    )
       ..paint = defaultPaint
       ..renderShape = true;
     add(hitBox);
@@ -36,13 +36,11 @@ class Player extends SpriteComponent
   }
 
   void falling() {
-
     if (y < screenHeight - height * 0.75) {
-
-      add(MoveEffect.by(Vector2(0, gravity), EffectController(duration: 0.0001)));
+      add(MoveEffect.by(
+          Vector2(0, gravity), EffectController(duration: 0.0001)));
       gravity += 0.1;
     }
-
   }
 
   void jumping() {
@@ -64,11 +62,10 @@ class Player extends SpriteComponent
     super.update(dt);
     // Falling
     falling();
-
   }
 
-  void reset(){
-    position = Vector2(screenWidth/3,screenHeight/2);
+  void reset() {
+    position = Vector2(screenWidth / 3, screenHeight / 2);
   }
 
   @override
@@ -77,6 +74,4 @@ class Player extends SpriteComponent
     super.onCollision(intersectionPoints, other);
     FlappyAmongUs().gameOver = true;
   }
-
 }
-

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flappy_among_us/game_over_menu.dart';
 import 'package:flappy_among_us/main.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +10,7 @@ class MainMenu extends StatefulWidget {
 }
 
 int selectedSkin = 0;
+int selectedPipeSkin = 0;
 
 class _MainMenuState extends State<MainMenu> {
   bool vis = false;
@@ -19,14 +19,14 @@ class _MainMenuState extends State<MainMenu> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(const Duration(milliseconds: 2000), () => setState(() => vis = true));
+    Timer(const Duration(milliseconds: 1000), () => setState(() => vis = true));
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: vis ? 1.0 : 0.0,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 1000),
       child: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -45,7 +45,7 @@ class _MainMenuState extends State<MainMenu> {
                   color: Colors.white),
             ),
             const SizedBox(
-              height: 100,
+              height: 40,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -64,17 +64,63 @@ class _MainMenuState extends State<MainMenu> {
               ],
             ),
             const SizedBox(
-              height: 100,
+              height: 60,
+            ),
+            const Text(
+              "Choose your pipe skin",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: "Cooper-Black",
+                  fontSize: 25,
+                  color: Colors.white),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    pipeSkinWidget(
+                      image: const AssetImage('assets/images/green_pipe.png'),
+                      pipeSkinIndex: 0,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    pipeSkinWidget(
+                      image: const AssetImage('assets/images/silver_pipe.png'),
+                      pipeSkinIndex: 1,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    pipeSkinWidget(
+                      image: const AssetImage('assets/images/gold_pipe.png'),
+                      pipeSkinIndex: 2,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    pipeSkinWidget(
+                      image: const AssetImage('assets/images/neon_pipe.png'),
+                      pipeSkinIndex: 3,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 60,
             ),
             MaterialButton(
               onPressed: () {
-                if (mainMenu) {
-                  FlappyAmongUs().gameOverMainMenu(selectedSkin);
-                  mainMenu = false;
-                } else {
-                  FlappyAmongUs().overlays.clear();
-                  FlappyAmongUs().prepare(selectedSkin);
-                }
+                FlappyAmongUs().overlays.clear();
+                FlappyAmongUs().prepare(selectedSkin,selectedPipeSkin);
+                FlappyAmongUs().resume();
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -106,8 +152,8 @@ class _MainMenuState extends State<MainMenu> {
         });
       },
       child: Container(
-        height: screenWidth / 2.5,
-        width: screenWidth / 2.5,
+        height: 150,
+        width: 150,
         decoration: BoxDecoration(
           color: skinIndex == selectedSkin
               ? const Color(0x55ffffff)
@@ -118,6 +164,34 @@ class _MainMenuState extends State<MainMenu> {
                   skinIndex == selectedSkin ? Colors.white : Colors.transparent,
               width: 3),
           image: DecorationImage(image: image, fit: BoxFit.fitHeight),
+        ),
+      ),
+    );
+  }
+
+  Widget pipeSkinWidget(
+      {required ImageProvider image, required int pipeSkinIndex}) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedPipeSkin = pipeSkinIndex;
+        });
+      },
+      child: Container(
+        height: 150,
+        width: 150,
+        decoration: BoxDecoration(
+          color: const Color(0x55ffffff),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+              color: pipeSkinIndex == selectedPipeSkin
+                  ? Colors.white
+                  : Colors.transparent,
+              width: 3),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: Image(image: image,),
         ),
       ),
     );

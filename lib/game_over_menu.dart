@@ -1,10 +1,9 @@
 import 'package:flappy_among_us/main.dart';
 import 'package:flutter/material.dart';
 
-bool mainMenu = false;
 
 class GameOverMenu extends StatelessWidget {
-  GameOverMenu({Key? key}) : super(key: key);
+  const GameOverMenu({Key? key}) : super(key: key);
 
 
   @override
@@ -50,7 +49,6 @@ class GameOverMenu extends StatelessWidget {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    mainMenu = true;
                     FlappyAmongUs().overlays.add("MainMenu");
                   },
                   icon: const Icon(

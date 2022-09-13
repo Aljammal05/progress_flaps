@@ -36,80 +36,108 @@ class _MainMenuState extends State<MainMenu> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Choose your character",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: "Cooper-Black",
-                  fontSize: 25,
-                  color: Colors.white),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                skinWidget(
-                  image: const AssetImage('assets/images/JO_skin.png'),
-                  skinIndex: 0,
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                skinWidget(
-                  image: const AssetImage('assets/images/PS_skin.png'),
-                  skinIndex: 1,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            const Text(
-              "Choose your pipe skin",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: "Cooper-Black",
-                  fontSize: 25,
-                  color: Colors.white),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    pipeSkinWidget(
-                      image: const AssetImage('assets/images/green_pipe.png'),
-                      pipeSkinIndex: 0,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    pipeSkinWidget(
-                      image: const AssetImage('assets/images/silver_pipe.png'),
-                      pipeSkinIndex: 1,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    pipeSkinWidget(
-                      image: const AssetImage('assets/images/gold_pipe.png'),
-                      pipeSkinIndex: 2,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    pipeSkinWidget(
-                      image: const AssetImage('assets/images/neon_pipe.png'),
-                      pipeSkinIndex: 3,
-                    ),
-                  ],
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(35),
+                  color: Color(0xff333333),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Choose your character",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: "Cooper-Black",
+                            fontSize: 25,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          skinWidget(
+                            image: const AssetImage('assets/images/JO_skin.png'),
+                            skinIndex: 0,
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          skinWidget(
+                            image: const AssetImage('assets/images/PS_skin.png'),
+                            skinIndex: 1,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(35),
+                  color: const Color(0xff333333),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Choose your pipe skin",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: "Cooper-Black",
+                            fontSize: 25,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            pipeSkinWidget(
+                                image: const AssetImage('assets/images/green_pipe.png'),
+                                pipeSkinIndex: 0,
+                                unlockScore: 0),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            pipeSkinWidget(
+                                image:
+                                    const AssetImage('assets/images/silver_pipe.png'),
+                                pipeSkinIndex: 1,
+                                unlockScore: 0),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            pipeSkinWidget(
+                                image: const AssetImage('assets/images/gold_pipe.png'),
+                                pipeSkinIndex: 2,
+                                unlockScore: 1000),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            pipeSkinWidget(
+                                image: const AssetImage('assets/images/neon_pipe.png'),
+                                pipeSkinIndex: 3,
+                                unlockScore: 2500),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -119,7 +147,7 @@ class _MainMenuState extends State<MainMenu> {
             MaterialButton(
               onPressed: () {
                 FlappyAmongUs().overlays.clear();
-                FlappyAmongUs().prepare(selectedSkin,selectedPipeSkin);
+                FlappyAmongUs().prepare(selectedSkin, selectedPipeSkin);
                 FlappyAmongUs().resume();
               },
               child: Container(
@@ -170,29 +198,70 @@ class _MainMenuState extends State<MainMenu> {
   }
 
   Widget pipeSkinWidget(
-      {required ImageProvider image, required int pipeSkinIndex}) {
+      {required ImageProvider image,
+      required int pipeSkinIndex,
+      required int unlockScore}) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          selectedPipeSkin = pipeSkinIndex;
-        });
+        if (unlockScore <= highScore!) {
+          setState(() {
+            selectedPipeSkin = pipeSkinIndex;
+          });
+        }
       },
-      child: Container(
-        height: 150,
-        width: 150,
-        decoration: BoxDecoration(
-          color: const Color(0x55ffffff),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-              color: pipeSkinIndex == selectedPipeSkin
-                  ? Colors.white
-                  : Colors.transparent,
-              width: 3),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Image(image: image,),
-        ),
+      child: Stack(
+        children: [
+          Container(
+            height: 150,
+            width: 150,
+            decoration: BoxDecoration(
+              color: const Color(0x55ffffff),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                  color: pipeSkinIndex == selectedPipeSkin
+                      ? Colors.white
+                      : Colors.transparent,
+                  width: 3),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: Image(
+                image: image,
+              ),
+            ),
+          ),
+          unlockScore > highScore!
+              ? Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: const Color(0x55000000),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.lock,
+                        size: 70,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "score $unlockScore \nto unlock",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontFamily: "Cooper-Black",
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(),
+        ],
       ),
     );
   }

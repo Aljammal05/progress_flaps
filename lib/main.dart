@@ -7,6 +7,7 @@ import 'package:flappy_among_us/score_text.dart';
 import 'package:flappy_among_us/pipe_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'game_over_menu.dart';
 import 'splash.dart';
@@ -27,7 +28,7 @@ void main() {
 
 late final double screenWidth;
 late final double screenHeight;
-int highScore = 0;
+late int? highScore;
 int score = 0;
 double distanceTravelled = 0;
 double gravity = 2;
@@ -51,6 +52,8 @@ class FlappyAmongUs extends FlameGame
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    highScore = preferences.getInt("highScore") ?? 0;
     screenWidth = size[0];
     screenHeight = size[1];
   }
@@ -131,11 +134,13 @@ class FlappyAmongUs extends FlameGame
   }
 
   @override
-  void update(double dt) {
+  void update(double dt) async{
     super.update(dt);
     if (gameOver) {
-      if (score > highScore) {
+      if (score > highScore!) {
         highScore = score;
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setInt("highScore", highScore!);
       }
       pause();
       overlays.add("GameOverMenu");

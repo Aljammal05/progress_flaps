@@ -11,33 +11,34 @@ class PipeManager extends PositionComponent {
   Sprite upperPipeImage;
   Random random = Random();
 
-  PipeManager({required this.lowerPipeImage , required this.upperPipeImage}) {
+  PipeManager({required this.lowerPipeImage, required this.upperPipeImage}) {
     timer = Timer(2, onTick: () {
       _spawnPipes();
     }, repeat: true);
   }
 
   void _spawnPipes() {
-
-    double rng = random.nextDouble()*screenHeight*0.75 + screenHeight*0.25;
+    double rng =
+        random.nextDouble() * screenHeight * 0.75 + screenHeight * 0.25;
+    double randomSpace = random.nextDouble() * 75 + 125;
 
     Pipe lowerPipe = Pipe(
       sprite: lowerPipeImage,
       anchor: Anchor.topCenter,
-      position: Vector2(screenWidth + 200 ,rng),
+      position: Vector2(screenWidth + 200, rng),
     );
 
     Pipe upperPipe = Pipe(
       sprite: upperPipeImage,
       anchor: Anchor.bottomCenter,
-      position: Vector2(screenWidth + 200 ,rng- screenHeight*0.25),
+      position: Vector2(screenWidth + 200, rng - randomSpace),
     );
 
     add(upperPipe);
     add(lowerPipe);
   }
 
-  void reset(){
+  void reset() {
     timer.reset();
     removeAll(children);
     timer.start();

@@ -41,7 +41,7 @@ class _MainMenuState extends State<MainMenu> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(35),
-                  color: Color(0xff333333),
+                  color: Color(0xdd333333),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
@@ -85,7 +85,7 @@ class _MainMenuState extends State<MainMenu> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(35),
-                  color: const Color(0xff333333),
+                  color: const Color(0xdd333333),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),

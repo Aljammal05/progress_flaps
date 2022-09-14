@@ -12,7 +12,7 @@ class GameOverMenu extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(35),
-          color: const Color(0xff333333),
+          color: const Color(0xbb333333),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),

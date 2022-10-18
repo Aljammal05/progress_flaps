@@ -18,12 +18,14 @@ class ScoreText extends PositionComponent {
   @override
   void render(canvas) {
     super.render(canvas);
-    scoreText.render(
-      canvas,
-      'Score : $score   HI : $highScore',
-      Vector2(screenWidth / 2, 100),
-      anchor: Anchor.center,
-    );
+    if (!FlappyAmongUs().gameOver) {
+      scoreText.render(
+        canvas,
+        'Score : $score   HI : $highScore',
+        Vector2(screenWidth / 2, 100),
+        anchor: Anchor.center,
+      );
+    }
   }
 
   @override

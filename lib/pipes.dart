@@ -3,10 +3,8 @@ import 'package:flame/components.dart';
 import 'package:flappy_among_us/main.dart';
 import 'package:flutter/material.dart';
 
-
 class Pipe extends SpriteComponent {
-  Pipe(
-      {required sprite,required Anchor anchor , required position}){
+  Pipe({required sprite, required Anchor anchor, required position}) {
     super.sprite = sprite;
     super.anchor = anchor;
     super.position = position;
@@ -27,15 +25,13 @@ class Pipe extends SpriteComponent {
   @override
   void update(double dt) {
     super.update(dt);
-    if(!isVisible) {
+    if (!isVisible) {
       removeFromParent();
     }
-    position += Vector2(-dt*150, 0);
-
+    position += Vector2(-dt * 150, 0);
   }
 
   bool get isVisible {
     return x + width > 0;
   }
-
 }

@@ -41,7 +41,7 @@ class _MainMenuState extends State<MainMenu> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(35),
-                  color: Color(0xdd333333),
+                  color: const Color(0xdd333333),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
@@ -58,28 +58,45 @@ class _MainMenuState extends State<MainMenu> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          skinWidget(
-                            image: const AssetImage('assets/images/JO_skin.png'),
-                            skinIndex: 0,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          skinWidget(
-                            image: const AssetImage('assets/images/PS_skin.png'),
-                            skinIndex: 1,
-                          ),
-                        ],
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            skinWidget(
+                              image: const AssetImage('assets/images/anas_skin.png'),
+                              skinIndex: 0,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            skinWidget(
+                              image: const AssetImage('assets/images/issa_skin.png'),
+                              skinIndex: 1,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            skinWidget(
+                              image: const AssetImage('assets/images/JO_skin.png'),
+                              skinIndex: 2,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            skinWidget(
+                              image: const AssetImage('assets/images/PS_skin.png'),
+                              skinIndex: 3,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(

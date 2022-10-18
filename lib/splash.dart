@@ -17,7 +17,7 @@ class _SplashState extends State<Splash> {
     Timer(
       const Duration(seconds: 5),
       () {
-         FlappyAmongUs().overlays.add("MainMenu");
+        FlappyAmongUs().overlays.add("MainMenu");
         setState(() => isVisibleScreen = false);
       },
     );

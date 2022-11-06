@@ -41,6 +41,12 @@ dependencies:
   path_provider_android: 2.0.19
   shared_preferences:
   vibration: ^1.7.5
+  firebase_core: ^2.1.0
+  cloud_firestore: ^4.0.2
+  image_picker: ^0.8.6
+  firebase_ml_vision: ^0.9.10
+  camera: ^0.10.0+4
+  get: ^4.3.8
 
 
 dev_dependencies:

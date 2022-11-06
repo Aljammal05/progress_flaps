@@ -1,5 +1,8 @@
+import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flame/components.dart' hide Timer;
 import 'package:flame/experimental.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame_audio/audio_pool.dart';
@@ -13,12 +16,17 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 
+import 'camera.dart';
 import 'game_over_menu.dart';
 import 'splash.dart';
 import 'player.dart';
 
-void main() {
+List<CameraDescription>? cameras;
+
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  cameras = await availableCameras();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
@@ -28,8 +36,9 @@ void main() {
     overlayBuilderMap: {
       "Splash": (_, FlappyAmongUs game) => const Splash(),
       "MainMenu": (_, FlappyAmongUs game) => const MainMenu(),
+      "FaceRecognition": (_, FlappyAmongUs game) => const FaceDetection(),
       "GameOverMenu": (_, FlappyAmongUs game) => const GameOverMenu(),
-      "Insult": (_, FlappyAmongUs game) => const InsultScreen()
+      "Insult": (_, FlappyAmongUs game) => const InsultScreen(),
     },
   ));
 }
@@ -40,7 +49,6 @@ late int? highScore;
 int score = 0;
 double distanceTravelled = 0;
 double gravity = 2;
-bool isPlaying = false;
 
 class FlappyAmongUs extends FlameGame
     with HasTappableComponents, HasCollisionDetection {
@@ -64,6 +72,7 @@ class FlappyAmongUs extends FlameGame
     super.onLoad();
 
     hasSupportVibrate = (await Vibration.hasCustomVibrationsSupport())!;
+    FlameAudio.bgm.initialize();
 
     pop = await FlameAudio.createPool(
       'sfx/pop.mp3',
@@ -86,9 +95,10 @@ class FlappyAmongUs extends FlameGame
     super.onTapDown(event);
     if (gameOver == false) {
       character.jumping();
+      mainMenuMusic(true);
       pop.start(volume: 0.1);
-      if(hasSupportVibrate){
-        Vibration.vibrate(duration: 50,amplitude: 123);
+      if (hasSupportVibrate) {
+        Vibration.vibrate(duration: 50, amplitude: 123);
       }
     }
   }
@@ -106,7 +116,6 @@ class FlappyAmongUs extends FlameGame
       size: Vector2(screenWidth, screenHeight),
     );
     add(background);
-
     String pipeColor = "green";
 
     switch (pipeSkin) {
@@ -124,8 +133,6 @@ class FlappyAmongUs extends FlameGame
         break;
     }
 
-    // FlameAudio.bgm.play("music/bg.mp3",volume: 0.01);
-
     pipeManager = PipeManager(
       lowerPipeImage: await loadSprite("lower_${pipeColor}_pipe.png"),
       upperPipeImage: await loadSprite("upper_${pipeColor}_pipe.png"),
@@ -134,14 +141,27 @@ class FlappyAmongUs extends FlameGame
 
     String skinName = "anas";
 
-    switch(skin){
-      case 0: skinName = "anas";
+    switch (skin) {
+      case 0:
+        skinName = "anas";
         break;
-      case 1: skinName = "issa";
+      case 1:
+        skinName = "issa";
         break;
-      case 2: skinName = "JO";
+      case 2:
+        skinName = "JO";
         break;
-      case 3: skinName = "PS";
+      case 3:
+        skinName = "PS";
+        break;
+      case 4:
+        skinName = "abood";
+        break;
+      case 5:
+        skinName = "samir";
+        break;
+      case 6:
+        skinName = "sabanekh";
         break;
     }
 
@@ -170,6 +190,19 @@ class FlappyAmongUs extends FlameGame
     character.reset();
     pipeManager.reset();
     resume();
+  }
+
+  void mainMenuMusic(bool isPlaying) {
+    if (bgMusic) {
+      if (isPlaying) {
+        FlameAudio.bgm.stop();
+      } else {
+        FlameAudio.bgm.play("music/bg.mp3");
+      }
+    } else {
+      FlameAudio.bgm.stop();
+      FlameAudio.bgm.dispose();
+    }
   }
 
   @override

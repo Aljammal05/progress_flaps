@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "808911676597",
+    "project_id": "progress-flaps",
+    "storage_bucket": "progress-flaps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808911676597:android:18f0b302c27d4393becafc",
+        "android_client_info": {
+          "package_name": "com.example.flappy_among_us"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808911676597-igr5uiec84cdr4qgaknslf3kl9qkctdq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFBy5LJ40-Nm2OvgxDxVOWuGBiC7DkQdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808911676597-igr5uiec84cdr4qgaknslf3kl9qkctdq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

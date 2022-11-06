@@ -84,6 +84,7 @@ class GameOverMenu extends StatelessWidget {
                         child: IconButton(
                           onPressed: () {
                             FlappyAmongUs().overlays.add("MainMenu");
+                            FlappyAmongUs().mainMenuMusic(false);
                           },
                           icon: const Icon(
                             Icons.home_filled,

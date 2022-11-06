@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:flappy_among_us/camera.dart';
 import 'package:flappy_among_us/main.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -11,15 +13,48 @@ class MainMenu extends StatefulWidget {
 
 int selectedSkin = 0;
 int selectedPipeSkin = 0;
+bool bgMusic = true;
 
 class _MainMenuState extends State<MainMenu> {
   bool vis = false;
+  Icon? icon;
+
+  Future<void> savePrefs(bool _bgMusic) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("bgMusic", _bgMusic);
+    setState(() {
+      bgMusic = _bgMusic;
+    });
+  }
+
+  Future<void> getSharedPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bgMusic = prefs.getBool("bgMusic") ?? true;
+    setState(() {});
+    print(bgMusic.toString());
+    if (bgMusic) {
+      icon = Icon(Icons.music_off);
+    } else {
+      icon = Icon(Icons.music_note);
+    }
+  }
+
+  final ButtonStyle style = ButtonStyle(
+      backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+      )));
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Timer(const Duration(milliseconds: 1000), () => setState(() => vis = true));
+    bgMusic;
+    getSharedPrefs();
+    FlappyAmongUs().mainMenuMusic(false);
   }
 
   @override
@@ -36,6 +71,37 @@ class _MainMenuState extends State<MainMenu> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                    style: style,
+                    onPressed: () {
+                        FlappyAmongUs().overlays.add("FaceRecognition");
+                      },
+                      child: const Icon(Icons.add)),
+                ElevatedButton(
+                    style: style,
+                    onPressed: () {
+                      if (bgMusic!) {
+                        setState(() {
+                          bgMusic = false;
+                          icon = Icon(Icons.music_note);
+                          savePrefs(bgMusic!);
+                        });
+                        FlappyAmongUs().mainMenuMusic(false);
+                      } else {
+                        setState(() {
+                          bgMusic = true;
+                          icon = Icon(Icons.music_off);
+                          savePrefs(bgMusic!);
+                        });
+                        FlappyAmongUs().mainMenuMusic(false);
+                      }
+                    },
+                    child: icon)
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -64,29 +130,57 @@ class _MainMenuState extends State<MainMenu> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             skinWidget(
-                              image: const AssetImage('assets/images/anas_skin.png'),
+                              image: const AssetImage(
+                                  'assets/images/anas_skin.png'),
                               skinIndex: 0,
                             ),
                             const SizedBox(
                               width: 20,
                             ),
                             skinWidget(
-                              image: const AssetImage('assets/images/issa_skin.png'),
+                              image: const AssetImage(
+                                  'assets/images/issa_skin.png'),
                               skinIndex: 1,
                             ),
                             const SizedBox(
                               width: 20,
                             ),
                             skinWidget(
-                              image: const AssetImage('assets/images/JO_skin.png'),
+                              image:
+                                  const AssetImage('assets/images/JO_skin.png'),
                               skinIndex: 2,
                             ),
                             const SizedBox(
                               width: 20,
                             ),
                             skinWidget(
-                              image: const AssetImage('assets/images/PS_skin.png'),
+                              image:
+                                  const AssetImage('assets/images/PS_skin.png'),
                               skinIndex: 3,
+                            ),
+                            skinWidget(
+                              image: const AssetImage(
+                                  'assets/images/abood_skin.png'),
+                              skinIndex: 4,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            skinWidget(
+                              image: const AssetImage(
+                                  'assets/images/samir_skin.png'),
+                              skinIndex: 5,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            skinWidget(
+                              image: const AssetImage(
+                                  'assets/images/sabanekh_skin.png'),
+                              skinIndex: 6,
+                            ),
+                            const SizedBox(
+                              width: 20,
                             ),
                           ],
                         ),
@@ -96,7 +190,9 @@ class _MainMenuState extends State<MainMenu> {
                 ),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -125,29 +221,32 @@ class _MainMenuState extends State<MainMenu> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             pipeSkinWidget(
-                                image: const AssetImage('assets/images/green_pipe.png'),
+                                image: const AssetImage(
+                                    'assets/images/green_pipe.png'),
                                 pipeSkinIndex: 0,
                                 unlockScore: 0),
                             const SizedBox(
                               width: 20,
                             ),
                             pipeSkinWidget(
-                                image:
-                                    const AssetImage('assets/images/silver_pipe.png'),
+                                image: const AssetImage(
+                                    'assets/images/silver_pipe.png'),
                                 pipeSkinIndex: 1,
                                 unlockScore: 0),
                             const SizedBox(
                               width: 20,
                             ),
                             pipeSkinWidget(
-                                image: const AssetImage('assets/images/gold_pipe.png'),
+                                image: const AssetImage(
+                                    'assets/images/gold_pipe.png'),
                                 pipeSkinIndex: 2,
                                 unlockScore: 1000),
                             const SizedBox(
                               width: 20,
                             ),
                             pipeSkinWidget(
-                                image: const AssetImage('assets/images/neon_pipe.png'),
+                                image: const AssetImage(
+                                    'assets/images/neon_pipe.png'),
                                 pipeSkinIndex: 3,
                                 unlockScore: 2500),
                           ],

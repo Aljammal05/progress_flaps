@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import 'main.dart';
@@ -18,6 +19,7 @@ class _SplashState extends State<Splash> {
       const Duration(seconds: 5),
       () {
         FlappyAmongUs().overlays.add("MainMenu");
+        FlappyAmongUs().mainMenuMusic(false);
         setState(() => isVisibleScreen = false);
       },
     );
